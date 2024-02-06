@@ -6,7 +6,7 @@ import { NoteDefaultNew } from '../../Components/note-default'
 
 export function Notes(){
     return(
-        <main className="h-auto w-full flex flex-col items-center">
+        <main className="h-full w-full flex flex-col items-center">
 
             <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-between items-center pl-5 pr-5">
                 <img src={Logo} alt='logo da nlw expert by rocketseat' className='h-10'/>
@@ -25,12 +25,8 @@ export function Notes(){
                     {/* Note default */}
                     <NoteDefaultNew/>
 
-                    <NotesCard/>
-                    <NotesCard/>
-                    <NotesCard/>
-                    <NotesCard/>
-                    <NotesCard/>
-                    <NotesCard/>
+                    <NotesCard date={new Date()} text='escrevendo qualquer coisa aqui!!!'/>
+
                 </section>
             </div>
         </main>

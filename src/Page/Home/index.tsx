@@ -1,4 +1,12 @@
-import { Link } from 'react-router-dom'
+
+// Import firebase auth
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../Services'
+
+// Import link and useNavigate
+import { Link, useNavigate } from 'react-router-dom'
+
+// Import hook form
 import { useForm } from 'react-hook-form'
 
 // Tipagem 
@@ -8,13 +16,23 @@ import { LoginType } from './type'
 import Logo from '../../assets/imagens/Logo.svg'
 
 export function Home(){
+    // navigate
+    const navigate = useNavigate()
+
     // Buscando o handle eo register
     const { handleSubmit, register } = useForm<LoginType>()
 
     // logando usuario
-    function loginUser({email,password}:LoginType){
+    async function loginUser({email,password}:LoginType){
         if(email !== '' && password !== ''){
-            console.log('ok')
+            // Logando usuario
+            const user = await signInWithEmailAndPassword(auth, email, password)
+
+            // Salvando uid na localStorage
+            localStorage.setItem('@user',JSON.stringify(user.user.uid))
+
+            // navegando para a rota notes
+            navigate('/notes')
         }
     }
 

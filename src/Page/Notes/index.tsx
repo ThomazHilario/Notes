@@ -1,29 +1,38 @@
+import Logo from '../../assets/imagens/Logo.svg'
+
+// Components
+import { NotesCard } from '../../Components/notes-card'
+import { NoteDefaultNew } from '../../Components/note-default'
+
 export function Notes(){
     return(
-        <main className="h-screen w-full">
-            <section className="grid grid-cols-3 grid-rows-[300px] gap-5 p-20">
-                <div className="bg-slate-700 space-y-4 p-5 rounded-md">
-                    <h1 className="text-slate-200 ">Adicionar nota</h1>
+        <main className="h-auto w-full flex flex-col items-center">
 
-                    <p className="text-slate-400">
-                        Grave uma nota em áudio que será convertida para texto automaticamente.
-                    </p>
-                </div>
-                <div className="bg-gradient-to-t p-5 space-y-4 from-black/40 to-slate-700/90 rounded-md">
-                    <h1 className="text-slate-200">ha dias</h1>
-                    
-                    <p className="text-slate-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis sunt aspernatur eos esse facere unde delectus libero aliquid. Nulla debitis unde.</p>
+            <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-between items-center pl-5 pr-5">
+                <img src={Logo} alt='logo da nlw expert by rocketseat' className='h-10'/>
+            </header>
 
-                    <p className="text-slate-400">facilis consectetur iusto voluptatibus corrupti, impedit provident atque aspernatur.</p>
-                </div>
-                <div className="bg-gradient-to-t p-5 space-y-4 from-black/40 to-slate-700/90 rounded-md">
-                    <h1 className="text-slate-200">ha dias</h1>
-                    
-                    <p className="text-slate-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis sunt aspernatur eos esse facere unde delectus libero aliquid. Nulla debitis unde.</p>
+            <div className="flex flex-col w-10/12 justify-center mt-10 mb-10">
 
-                    <p className="text-slate-400">facilis consectetur iusto voluptatibus corrupti, impedit provident atque aspernatur.</p>
-                </div>
-            </section>
+                {/* input form */}
+                <form className="flex justify-center">
+                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..."/>
+                </form>
+
+                {/* section notes */}
+                <section className="grid grid-cols-3 gap-5 mt-5 ">
+
+                    {/* Note default */}
+                    <NoteDefaultNew/>
+
+                    <NotesCard/>
+                    <NotesCard/>
+                    <NotesCard/>
+                    <NotesCard/>
+                    <NotesCard/>
+                    <NotesCard/>
+                </section>
+            </div>
         </main>
     )
 }

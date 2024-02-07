@@ -56,7 +56,7 @@ export function Notes(){
     },[])
 
     // filtrandoCards
-    const filterCards = seach !== '' ? notes.filter(note => note.text.includes(seach)) : notes
+    const filterCards = seach !== '' ? notes.filter(note => note.text.toLowerCase().includes(seach.toLowerCase())) : notes
 
     return(
         <main className="h-full w-full flex flex-col items-center">

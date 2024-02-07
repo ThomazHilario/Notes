@@ -43,19 +43,23 @@ export function NoteDefaultNew(){
     // addNote
     async function addNote(){
         try {
-
-            // Salvando na state notes
-            setNotes([...notes,{
-                date:new Date(),
-                text:createNote
-            }])
-
-            await setDoc(doc(db,'Users',id as string),{
-                Notes:[...notes,{
-                    date:Date.now(),
+            if(createNote !== ''){
+                // Salvando na state notes
+                setNotes([...notes,{
+                    date:new Date(),
                     text:createNote
-                }]
-            })
+                }])
+
+                await setDoc(doc(db,'Users',id as string),{
+                    Notes:[...notes,{
+                        date:Date.now(),
+                        text:createNote
+                    }]
+                })
+
+                // Limpando state
+                setCreateNote('')
+            }
         } catch (error) {
             console.log(error)
         }
@@ -100,7 +104,7 @@ export function NoteDefaultNew(){
                             </p>}
                         </div>
 
-                        <button className='bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}>Adicionar nota</button>
+                        <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}>Adicionar nota</Dialog.Close>
                     </Dialog.Content>
 
                 </Dialog.Portal>

@@ -1,5 +1,5 @@
 // imports react
-import { useEffect } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 
 // import firebase
 import { getDoc, doc } from 'firebase/firestore'
@@ -52,6 +52,25 @@ export function Notes(){
         loadNotes()
     },[])
 
+    // filtrandoCards
+    function filterCards(e:ChangeEvent<HTMLTextAreaElement>){
+        document.querySelectorAll('.card').forEach(card => {
+
+            // Valor digitado
+            const valor_digitado = e.target.value.toLowerCase()
+
+            // meus cards
+            const myCard:HTMLButtonElement = card as HTMLButtonElement
+
+            // Verificando se dentro do meu card tem o valor que eu digitei
+            if(myCard.lastElementChild?.textContent?.includes(valor_digitado)){
+                myCard.style.display = 'block'
+            } else{
+                myCard.style.display = 'none'
+            }
+        })
+    }
+
     return(
         <main className="h-full w-full flex flex-col items-center">
 
@@ -63,7 +82,7 @@ export function Notes(){
 
                 {/* input form */}
                 <form className="flex justify-center">
-                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..."/>
+                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..." onChange={filterCards}/>
                 </form>
 
                 {/* section notes */}

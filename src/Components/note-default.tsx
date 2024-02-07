@@ -1,8 +1,27 @@
-import { ChangeEvent, useState } from 'react'
+// imports react
+import { ChangeEvent, useState, useEffect } from 'react'
+
+// import radix
 import * as Dialog from '@radix-ui/react-dialog'
+
+// import Context
 import { useNotes } from '../Context'
 
+// imports firebase
+import { db } from '../Services'
+import { setDoc, doc } from 'firebase/firestore'
+
 export function NoteDefaultNew(){
+
+    // Buscando o id na localStorage
+    useEffect(() => {
+        if(localStorage.getItem('@user') !== null){
+            setId(JSON.parse(localStorage.getItem('@user') as string))
+        }
+    },[])
+
+    // state - id
+    const [id, setId] = useState<string>()
 
     // states - globais
     const { notes, setNotes } = useNotes()
@@ -19,7 +38,7 @@ export function NoteDefaultNew(){
     }
 
     // contentWords
-    function contentWords(e:ChangeEvent<HTMLTextAreaElement>){
+    function contentWordsAndUpdateState(e:ChangeEvent<HTMLTextAreaElement>){
 
         // Voltando o paragrafo caso o valor do input seja vazio
         if(e.target.value === ''){
@@ -31,15 +50,29 @@ export function NoteDefaultNew(){
     }
 
     // addNote
-    function addNote(){
-        
-        // Salvando na state notes
-        setNotes([...notes,{
-            date:new Date(),
-            text:createNote
-        }])
+    async function addNote(){
+        try {
+
+            const myId:string = id as string
+
+            // Salvando na state notes
+            setNotes([...notes,{
+                date:new Date(),
+                text:createNote
+            }])
+
+            await setDoc(doc(db,'Users',myId),{
+                Notes:[...notes,{
+                    date:new Date(),
+                    text:createNote
+                }]
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
     }
+
     return(
         <Dialog.Root>
 
@@ -72,7 +105,7 @@ export function NoteDefaultNew(){
                             <h1 className='text-slate-200'>Adicionar nota</h1>
                             
                             {board ? 
-                            <textarea onChange={contentWords} className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus/>
+                            <textarea onChange={contentWordsAndUpdateState} className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus/>
                              : 
                              <p className='text-slate-400'>Comece <button onClick={onBoard}className='text-lime-400'>gravando </button> uma nota em áudio ou se preferir <button className='text-lime-400' onClick={onBoard}>utilize apenas texto.</button>
                             </p>}

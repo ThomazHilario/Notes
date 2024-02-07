@@ -2,7 +2,9 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 
 interface PropsContext{
     notes: any[],
-    setNotes:React.Dispatch<React.SetStateAction<object[]>>,
+    setNotes:React.Dispatch<React.SetStateAction<any[]>>,
+    id:string,
+    setId:React.Dispatch<React.SetStateAction<string>>
 }
 
 interface PropsChild{
@@ -16,8 +18,11 @@ export function NotesProvider({children}:PropsChild){
     // notes - state
     const [notes, setNotes] = useState<any[]>([])
 
+    // id - state
+    const [id, setId] = useState<string>('')
+
     return(
-        <Context.Provider value={{notes, setNotes}}>
+        <Context.Provider value={{notes, setNotes, id, setId}}>
             {children}
         </Context.Provider>
     )

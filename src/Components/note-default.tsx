@@ -1,5 +1,5 @@
 // imports react
-import { ChangeEvent, useState, useEffect } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 // import radix
 import * as Dialog from '@radix-ui/react-dialog'
@@ -13,18 +13,8 @@ import { setDoc, doc } from 'firebase/firestore'
 
 export function NoteDefaultNew(){
 
-    // Buscando o id na localStorage
-    useEffect(() => {
-        if(localStorage.getItem('@user') !== null){
-            setId(JSON.parse(localStorage.getItem('@user') as string))
-        }
-    },[])
-
-    // state - id
-    const [id, setId] = useState<string>()
-
     // states - globais
-    const { notes, setNotes } = useNotes()
+    const { notes, setNotes, id } = useNotes()
     
     // Referencia ao textArea
     const [createNote, setCreateNote] = useState<string>('')
@@ -53,15 +43,13 @@ export function NoteDefaultNew(){
     async function addNote(){
         try {
 
-            const myId:string = id as string
-
             // Salvando na state notes
             setNotes([...notes,{
                 date:new Date(),
                 text:createNote
             }])
 
-            await setDoc(doc(db,'Users',myId),{
+            await setDoc(doc(db,'Users',id as string),{
                 Notes:[...notes,{
                     date:new Date(),
                     text:createNote

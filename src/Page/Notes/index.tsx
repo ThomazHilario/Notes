@@ -1,4 +1,14 @@
+// imports react
+import { useEffect } from 'react'
+
+// import firebase
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from '../../Services'
+
+// import logo
 import Logo from '../../assets/imagens/Logo.svg'
+
+//import context
 import { useNotes } from '../../Context'
 
 // Components
@@ -8,7 +18,34 @@ import { NoteDefaultNew } from '../../Components/note-default'
 export function Notes(){
 
     // states - globais
-    const { notes } = useNotes()
+    const { notes, setNotes, setId } = useNotes()
+
+    // Buscando dados do banco de dados
+    useEffect(() => {
+
+        // Verificando se tem a chave @user na localStorage
+        if(localStorage.getItem('@user') !== null){
+            setId(JSON.parse(localStorage.getItem('@user') as string))
+        }
+
+        // Buscando notas do banco de dados
+        async function loadNotes(){
+            try {
+                const docRef = doc(db,'Users',JSON.parse(localStorage.getItem('@user') as string))
+
+                const docSnap = await getDoc(docRef)
+
+                if(docSnap.exists()){
+                    setNotes(docSnap.data().Notes)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        // Chamando loadNotes
+        loadNotes()
+    },[])
 
     return(
         <main className="h-full w-full flex flex-col items-center">
@@ -30,7 +67,7 @@ export function Notes(){
                     {/* Note default */}
                     <NoteDefaultNew/>
 
-                    {notes.length > 0 && notes.map((item, idx) => <NotesCard key={idx} date={item.date} text={item.text}/>)}
+                    {notes.map((item,idx) => <NotesCard key={idx} date={new Date(item.date.seconds)} text={item.text}/>)}
 
                 </section>
             </div>

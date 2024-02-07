@@ -1,5 +1,5 @@
 // imports react
-import { ChangeEvent, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // import firebase
 import { getDoc, doc } from 'firebase/firestore'
@@ -19,6 +19,9 @@ export function Notes(){
 
     // states - globais
     const { notes, setNotes, setId } = useNotes()
+
+    // state - seach
+    const [seach, setSeach] = useState<string>('')
 
     // Buscando dados do banco de dados
     useEffect(() => {
@@ -53,33 +56,22 @@ export function Notes(){
     },[])
 
     // filtrandoCards
-    function filterCards(valor_digitado:string){
-        document.querySelectorAll('.card').forEach(card => {
-
-            // meus cards
-            const myCard:HTMLButtonElement = card as HTMLButtonElement
-
-            // Verificando se dentro do meu card tem o valor que eu digitei
-            if(myCard.lastElementChild?.textContent?.includes(valor_digitado)){
-                myCard.style.display = 'block'
-            } else{
-                myCard.style.display = 'none'
-            }
-        })
-    }
+    const filterCards = seach !== '' ? notes.filter(note => note.text.includes(seach)) : notes
 
     return(
         <main className="h-full w-full flex flex-col items-center">
 
+            {/* Header */}
             <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-between items-center pl-5 pr-5">
                 <img src={Logo} alt='logo da nlw expert by rocketseat' className='h-10'/>
             </header>
 
+            {/* Container */}
             <div className="flex flex-col w-10/12 justify-center mt-10 mb-10">
 
                 {/* input form */}
                 <form className="flex justify-center">
-                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..." onChange={(e) => filterCards(e.target.value)}/>
+                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..." onChange={(e) => setSeach(e.target.value)}/>
                 </form>
 
                 {/* section notes */}
@@ -88,7 +80,7 @@ export function Notes(){
                     {/* Note default */}
                     <NoteDefaultNew/>
 
-                    {notes.map((item,idx) => <NotesCard key={idx} date={item.date} text={item.text} position={idx}/>)}
+                    {filterCards.map((item,idx) => <NotesCard key={idx} date={item.date} text={item.text} position={idx}/>)}
 
                 </section>
             </div>

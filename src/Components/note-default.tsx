@@ -45,16 +45,16 @@ export function NoteDefaultNew(){
         try {
             if(createNote !== ''){
                 // Salvando na state notes
-                setNotes([...notes,{
+                setNotes([{
                     date:new Date(),
                     text:createNote
-                }])
+                },...notes])
 
                 await setDoc(doc(db,'Users',id as string),{
-                    Notes:[...notes,{
+                    Notes:[{
                         date:Date.now(),
                         text:createNote
-                    }]
+                    },...notes]
                 })
 
                 // Limpando state

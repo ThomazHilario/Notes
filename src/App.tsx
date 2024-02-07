@@ -1,9 +1,11 @@
 import { BrowserPage } from "./Routes"
-
+import { NotesProvider } from "./Context"
 function App() {
   
   return (
-    <BrowserPage/>
+    <NotesProvider>
+      <BrowserPage/>
+    </NotesProvider>
   )
 }
 

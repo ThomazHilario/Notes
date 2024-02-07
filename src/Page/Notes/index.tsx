@@ -1,10 +1,15 @@
 import Logo from '../../assets/imagens/Logo.svg'
+import { useNotes } from '../../Context'
 
 // Components
 import { NotesCard } from '../../Components/notes-card'
 import { NoteDefaultNew } from '../../Components/note-default'
 
 export function Notes(){
+
+    // states - globais
+    const { notes } = useNotes()
+
     return(
         <main className="h-full w-full flex flex-col items-center">
 
@@ -25,7 +30,7 @@ export function Notes(){
                     {/* Note default */}
                     <NoteDefaultNew/>
 
-                    <NotesCard date={new Date()} text='escrevendo qualquer coisa aqui!!!'/>
+                    {notes.length > 0 && notes.map((item, idx) => <NotesCard key={idx} date={item.date} text={item.text}/>)}
 
                 </section>
             </div>

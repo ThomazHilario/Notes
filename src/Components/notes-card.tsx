@@ -1,12 +1,50 @@
 import * as Dialog from '@radix-ui/react-dialog'
+
+// imports Context
+import { useNotes } from '../Context';
+
+// imports date-fns
 import { formatDistanceToNow} from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+
+// imports firebase
+import { updateDoc, doc } from 'firebase/firestore'
+import { db } from '../Services'; 
+
+// PropsCard
 interface PropsCard{
-    date:Date,
+    date:number,
     text:string,
+    position:number;
 }
 
-export function NotesCard({ date, text }:PropsCard){
+export function NotesCard({ date, text, position}:PropsCard){
+
+    // state - notes e setNotes
+    const { notes, setNotes, id} = useNotes()
+
+    // deleteNotes
+    async function deleteNotes(position:number){
+       try {
+         // Deletando nota
+         notes.splice(position, 1)
+
+         // Atulizando state
+         setNotes([...notes])
+ 
+        // referencia do documento
+        const docRef = doc(db,'Users', id)
+
+         // Atualizando o banco de dados
+         await updateDoc(docRef,{
+            Notes:[...notes]
+         })
+       } catch (e) {
+        console.log(e)
+       }
+        
+    }
+
     return(
         <Dialog.Root>
             <Dialog.Trigger className=" text-justify flex flex-col bg-gradient-to-t p-5 gap-3 from-black/30 to-slate-700/60 rounded-md hover:ring-2 hover: ring-slate-600 transition h-80">
@@ -32,7 +70,7 @@ export function NotesCard({ date, text }:PropsCard){
                         <p className='text-slate-400'>{text}</p>
                     </div>
 
-                    <button className='bg-red-500 w-full rounded-b-md p-2'>Deseja apagar esta nota ?</button>
+                    <button className='bg-red-500 w-full rounded-b-md p-2' onClick={() => deleteNotes(position)}>Deseja apagar esta nota ?</button>
                 </Dialog.Content>
 
             </Dialog.Portal>

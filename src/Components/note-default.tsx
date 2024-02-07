@@ -11,6 +11,7 @@ import { useNotes } from '../Context'
 import { db } from '../Services'
 import { setDoc, doc } from 'firebase/firestore'
 
+
 export function NoteDefaultNew(){
 
     // states - globais
@@ -51,7 +52,7 @@ export function NoteDefaultNew(){
 
             await setDoc(doc(db,'Users',id as string),{
                 Notes:[...notes,{
-                    date:new Date(),
+                    date:Date.now(),
                     text:createNote
                 }]
             })

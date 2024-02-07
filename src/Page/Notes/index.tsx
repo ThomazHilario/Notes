@@ -31,13 +31,18 @@ export function Notes(){
         // Buscando notas do banco de dados
         async function loadNotes(){
             try {
+
+                // Montando referencia
                 const docRef = doc(db,'Users',JSON.parse(localStorage.getItem('@user') as string))
 
+                // Buscando dados no banco de dados
                 const docSnap = await getDoc(docRef)
 
+                // Verificando se tem dados
                 if(docSnap.exists()){
                     setNotes(docSnap.data().Notes)
                 }
+                
             } catch (error) {
                 console.log(error)
             }
@@ -67,7 +72,7 @@ export function Notes(){
                     {/* Note default */}
                     <NoteDefaultNew/>
 
-                    {notes.map((item,idx) => <NotesCard key={idx} date={new Date(item.date.seconds)} text={item.text}/>)}
+                    {notes.map((item,idx) => <NotesCard key={idx} date={item.date} text={item.text} position={idx}/>)}
 
                 </section>
             </div>

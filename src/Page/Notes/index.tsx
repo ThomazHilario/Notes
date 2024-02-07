@@ -53,11 +53,8 @@ export function Notes(){
     },[])
 
     // filtrandoCards
-    function filterCards(e:ChangeEvent<HTMLTextAreaElement>){
+    function filterCards(valor_digitado:string){
         document.querySelectorAll('.card').forEach(card => {
-
-            // Valor digitado
-            const valor_digitado = e.target.value.toLowerCase()
 
             // meus cards
             const myCard:HTMLButtonElement = card as HTMLButtonElement
@@ -82,7 +79,7 @@ export function Notes(){
 
                 {/* input form */}
                 <form className="flex justify-center">
-                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..." onChange={filterCards}/>
+                    <input type="text" className=" w-full bg-slate-900 outline-none text-3xl" placeholder="Busque em suas notas..." onChange={(e) => filterCards(e.target.value)}/>
                 </form>
 
                 {/* section notes */}

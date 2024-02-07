@@ -67,7 +67,7 @@ export function Notes(){
                 </form>
 
                 {/* section notes */}
-                <section className="grid grid-cols-3 gap-5 mt-5 ">
+                <section className="grid gap-5 mt-5 md:grid-cols-2 xl:grid-cols-3  ">
 
                     {/* Note default */}
                     <NoteDefaultNew/>

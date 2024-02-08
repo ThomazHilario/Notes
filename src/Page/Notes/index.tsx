@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 
 // import firebase
 import { getDoc, doc } from 'firebase/firestore'
-import { db } from '../../Services'
+import { signOut } from 'firebase/auth'
+import { db, auth } from '../../Services'
 
 // import logo
 import Logo from '../../assets/imagens/Logo.svg'
@@ -58,12 +59,25 @@ export function Notes(){
     // filtrandoCards
     const filterCards = seach !== '' ? notes.filter(note => note.text.toLowerCase().includes(seach.toLowerCase())) : notes
 
+    // singOut
+    async function singOut(){
+
+        // Saindo da conta
+        await signOut(auth)
+
+        // Removendo uid da localStorage
+        localStorage.removeItem('@user')
+
+    }
+
     return(
         <main className="h-full w-full flex flex-col items-center">
 
             {/* Header */}
             <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-between items-center pl-5 pr-5">
                 <img src={Logo} alt='logo da nlw expert by rocketseat' className='h-10'/>
+
+                <button onClick={singOut}>sair</button>
             </header>
 
             {/* Container */}

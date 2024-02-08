@@ -47,19 +47,24 @@ export function Home(){
 
     // logando usuario
     async function loginUser({email,password}:LoginType){
-        if(email !== '' && password !== ''){
+        try{
+            if(email !== '' && password !== ''){
 
-            setLoading(true)
-
-            // Logando usuario
-            const user = await signInWithEmailAndPassword(auth, email, password)
-
-            // Salvando uid na localStorage
-            localStorage.setItem('@user',JSON.stringify(user.user.uid))
-
-            // navegando para a rota notes
-            navigate('/notes')
-        }
+                setLoading(true)
+    
+                // Logando usuario
+                const user = await signInWithEmailAndPassword(auth, email, password)
+    
+                // Salvando uid na localStorage
+                localStorage.setItem('@user',JSON.stringify(user.user.uid))
+    
+                // navegando para a rota notes
+                navigate('/notes')
+            }
+        }catch(error){
+            console.log(error)
+            setLoading(false)
+        }                
     }
 
     return (

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 
 // import firebase
 import { getDoc, doc } from 'firebase/firestore'
-import { signOut } from 'firebase/auth'
-import { db, auth } from '../../Services'
+
+import { db } from '../../Services'
 
 // import logo
 import Logo from '../../assets/imagens/Logo.svg'
@@ -15,8 +15,10 @@ import { useNotes } from '../../Context'
 // Components
 import { NotesCard } from '../../Components/notes-card'
 import { NoteDefaultNew } from '../../Components/note-default'
+import Menu from '../../Components/menuUser'
 
 export function Notes(){
+
 
     // states - globais
     const { notes, setNotes, setId } = useNotes()
@@ -59,25 +61,15 @@ export function Notes(){
     // filtrandoCards
     const filterCards = seach !== '' ? notes.filter(note => note.text.toLowerCase().includes(seach.toLowerCase())) : notes
 
-    // singOut
-    async function singOut(){
-
-        // Saindo da conta
-        await signOut(auth)
-
-        // Removendo uid da localStorage
-        localStorage.removeItem('@user')
-
-    }
-
     return(
         <main className="h-full w-full flex flex-col items-center">
 
             {/* Header */}
-            <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-between items-center pl-5 pr-5">
-                <img src={Logo} alt='logo da nlw expert by rocketseat' className='h-10'/>
+            <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-center items-center pl-5 pr-5 md:justify-between">
+                <img src={Logo} alt='logo da nlw expert by rocketseat' className='hidden md:block md:h-10 '/>
 
-                <button onClick={singOut}>sair</button>
+                <Menu nameUser={'Thomaz'} cargo={'Desenvolvedor Front-end'} img={'https://plus.unsplash.com/premium_photo-1707092658632-cdcdf0f96901?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}/>
+                
             </header>
 
             {/* Container */}

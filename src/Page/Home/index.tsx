@@ -48,6 +48,9 @@ export function Home(){
     // logando usuario
     async function loginUser({email,password}:LoginType){
         if(email !== '' && password !== ''){
+
+            setLoading(true)
+
             // Logando usuario
             const user = await signInWithEmailAndPassword(auth, email, password)
 

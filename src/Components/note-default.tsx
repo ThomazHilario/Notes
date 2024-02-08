@@ -12,6 +12,8 @@ import { db } from '../Services'
 import { setDoc, doc } from 'firebase/firestore'
 
 
+let Speech:SpeechRecognition | null = null
+
 export function NoteDefaultNew(){
 
     // states - globais
@@ -20,8 +22,21 @@ export function NoteDefaultNew(){
     // Referencia ao textArea
     const [createNote, setCreateNote] = useState<string>('')
 
-    // state - option
+    // state - board
     const [board, setBoard] = useState<boolean>(false)
+
+    // state - isRecord
+    const [isRecord, setIsRecord] = useState<boolean>(false)
+
+    // openBoardCard
+    function openBoardCard(){
+
+        // Tirando o text area
+        setBoard(false)
+
+        // Tirando o button do gravador
+        setIsRecord(false)
+    }
 
     // writeOption
     function onBoard(){
@@ -66,13 +81,70 @@ export function NoteDefaultNew(){
 
     }
 
+    // startVoice
+    function startVoice(){
+
+        // Verificando se o objeto window tem suporte com api de voz
+        const isRecordingInBrowser = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window
+
+        // Retornando a janela antiga caso nao tenha suporte de voz
+        if(!isRecordingInBrowser){
+            alert('Seu navegador nao suporta gravacao de voz')
+            setIsRecord(false)
+            setBoard(false)
+            return
+        }
+
+        // exibindo o novo button
+        setIsRecord(true)
+
+        // Exibindo text area
+        setBoard(true)
+
+        // Buscando o speech referente ao navegador
+        const isRecordSpeech = window.SpeechRecognition || window.webkitSpeechRecognition
+
+        // Instanciando isRecordSpeech
+        Speech = new isRecordSpeech()
+
+        // linguagem de fala
+        Speech.lang = 'pt-BR'
+
+        // Maximo de alternativas de palavra dificeis
+        Speech.maxAlternatives = 1
+
+        // Falando para a api que no quero que ela pare de gravar ao parar de falar
+        Speech.continuous = true
+
+        // Mostrando resultado instantaneamente
+        Speech.interimResults = true
+
+        // function que ativa o speech ao falar
+        Speech.onresult = ((event) => {
+            const frase = Array.from(event.results).reduce((text,result) => {return text.concat(result[0].transcript)},'')
+
+            setCreateNote(frase) 
+        })
+        Speech.start()
+
+    }
+    
+    // stopVoice
+    function stopVoice(){
+
+        setIsRecord(false)
+
+        if(Speech !== null){
+            Speech.stop()
+        }
+    }
     return(
         <Dialog.Root>
 
             
 
             {/* Trocando o button pelo dialog tringger */}
-            <Dialog.Trigger className="text-justify flex flex-col bg-slate-700 gap-3 p-5 rounded-md  hover:ring-2 hover: ring-slate-600 transition h-80" onClick={() => setBoard(false)}>
+            <Dialog.Trigger className="text-justify flex flex-col bg-slate-700 gap-3 p-5 rounded-md  hover:ring-2 hover: ring-slate-600 transition h-80" onClick={openBoardCard}>
 
                 <h1 className="text-slate-200 ">Adicionar nota</h1>
 
@@ -93,18 +165,23 @@ export function NoteDefaultNew(){
                         {/* Icon de fechar modal */}
                         <Dialog.Close className=' py-1.5 px-3 absolute right-0 top-0 bg-slate-800 text-white'>x</Dialog.Close>
 
-                        <div className=' flex flex-col w-[80vh] h-[60vh] gap-3 p-5 bg-slate-700 rounded-t-md'> 
+                        <div className=' flex flex-col h-[60vh] gap-3 p-5 bg-slate-700 rounded-t-md sm:w-[90vw] md:w-[80vw] lg:w-[60vw]'> 
 
                             <h1 className='text-slate-200'>Adicionar nota</h1>
                             
                             {board ? 
-                            <textarea onChange={contentWordsAndUpdateState} className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus/>
+                            <textarea onChange={contentWordsAndUpdateState} className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" value={createNote} autoFocus/>
                              : 
-                             <p className='text-slate-400'>Comece <button onClick={onBoard}className='text-lime-400'>gravando </button> uma nota em áudio ou se preferir <button className='text-lime-400' onClick={onBoard}>utilize apenas texto.</button>
+                             <p className='text-slate-400'>Comece <button onClick={startVoice}className='text-lime-400'>gravando </button> uma nota em áudio ou se preferir <button className='text-lime-400' onClick={onBoard}>utilize apenas texto.</button>
                             </p>}
                         </div>
 
-                        <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}>Adicionar nota</Dialog.Close>
+                        {isRecord ? 
+                        <button className='bg-slate-800 w-full rounded-b-md p-2 text-red-500 flex justify-center items-center gap-3' onClick={stopVoice}>
+                            <div className='size-3 rounded-full bg-red-500 animate-pulse'/>
+                            Parar de gravar
+                        </button> 
+                        : <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}>Adicionar nota</Dialog.Close>}
                     </Dialog.Content>
 
                 </Dialog.Portal>

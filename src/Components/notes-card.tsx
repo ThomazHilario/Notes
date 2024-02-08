@@ -64,7 +64,7 @@ export function NotesCard({ date, text, position}:PropsCard){
                 
                 {/* Conteudo modal */}
                 <Dialog.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                    <div className=' flex flex-col h-[60vh] w-[80vh] gap-3 p-5 bg-slate-700 rounded-t-md'>
+                    <div className=' flex flex-col h-[60vh] gap-3 p-5 bg-slate-700 rounded-t-md sm:w-[90vw] md:w-[80vw] lg:w-[60vw]'>
                         <h1 className='text-slate-200'>{formatDistanceToNow(date,{addSuffix:true,locale:ptBR})}</h1>
                         
                         <p className='text-slate-400'>{text}</p>

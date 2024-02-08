@@ -64,7 +64,11 @@ export function NotesCard({ date, text, position}:PropsCard){
                 
                 {/* Conteudo modal */}
                 <Dialog.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                    <div className=' flex flex-col h-[60vh] gap-3 p-5 bg-slate-700 rounded-t-md sm:w-[90vw] md:w-[80vw] lg:w-[60vw]'>
+                    
+                    {/* Icon de fechar modal */}
+                    <Dialog.Close className=' py-1.5 px-3 absolute right-0 top-0 bg-slate-800 text-white'>x</Dialog.Close>
+
+                    <div className=' h-[90vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
                         <h1 className='text-slate-200'>{formatDistanceToNow(date,{addSuffix:true,locale:ptBR})}</h1>
                         
                         <p className='text-slate-400'>{text}</p>

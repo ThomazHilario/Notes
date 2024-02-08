@@ -67,7 +67,7 @@ export function Home(){
             
             {loading ? 
                 <button type="button" className="bg-indigo-500 ... rounded-sm flex justify-center items-center w-[220px] h-12" disabled>
-                    <svg className="rounded-full border-[8px] border-dotted border-white animate-spin size-9 mr-3 ..." viewBox="0 0  24">
+                    <svg className="rounded-full border-[8px] border-dotted border-white animate-spin size-9 mr-3 ..." viewBox="0 0 24 24">
                         {/* Animation  */}
                     </svg>
                     <p className='text-2xl'>Loading</p>

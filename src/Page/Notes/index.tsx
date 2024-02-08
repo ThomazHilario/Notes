@@ -1,9 +1,15 @@
 // imports react
 import { useEffect, useState } from 'react'
 
-// import firebase
-import { getDoc, doc } from 'firebase/firestore'
+// interface typescript
+interface PropsAccount{
+    usernameUser:string,
+    cargoUser:string,
+    img:string | null
+}
 
+// import firebase
+import { getDoc, doc, setDoc } from 'firebase/firestore'
 import { db } from '../../Services'
 
 // import logo
@@ -22,6 +28,9 @@ export function Notes(){
 
     // states - globais
     const { notes, setNotes, setId } = useNotes()
+
+    // state - account
+    const [account, setAccount] = useState<PropsAccount>({usernameUser:'',cargoUser:'',img:null})
 
     // state - seach
     const [seach, setSeach] = useState<string>('')
@@ -47,11 +56,26 @@ export function Notes(){
                 // Verificando se tem dados
                 if(docSnap.exists()){
                     setNotes(docSnap.data().Notes)
+                    setAccount(docSnap.data().account)
+                }else{
+                    createAccountAndNotesInDataBase()
                 }
                 
             } catch (error) {
                 console.log(error)
             }
+        }
+
+        // Salvando dados na localStorage e no banco de dados
+        async function createAccountAndNotesInDataBase(){
+            // Criando dados dentro do banco de dados do usuario
+            await setDoc(doc(db,'Users',JSON.parse(localStorage.getItem('@user') as string)),{
+                Notes:[],
+                account:JSON.parse(localStorage.getItem('account') as string)
+            })
+
+            // Setando na state account o valor da localStorage
+            setAccount(JSON.parse(localStorage.getItem('account') as string))
         }
 
         // Chamando loadNotes
@@ -68,7 +92,7 @@ export function Notes(){
             <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-center items-center pl-5 pr-5 md:justify-between">
                 <img src={Logo} alt='logo da nlw expert by rocketseat' className='hidden md:block md:h-10 '/>
 
-                <Menu nameUser={'Thomaz'} cargo={'Desenvolvedor Front-end'} img={'https://plus.unsplash.com/premium_photo-1707092658632-cdcdf0f96901?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}/>
+                <Menu nameUser={account.usernameUser} cargo={account.cargoUser} img={account.img}/>
                 
             </header>
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 // tipagem
 import { LoginType } from '../Home/type'
 
-// import firebase auth
+// import firebase 
 import { createUserWithEmailAndPassword,onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../Services'
 
@@ -45,11 +45,21 @@ export function Register(){
     const { handleSubmit, register } = useForm<LoginType>()
 
     // Criando usuario 
-    async function registerUser({email,password}:LoginType){
+    async function registerUser({email, password, cargo, username}:LoginType){
         try {
+
+            // Alterando loading para true
+            setLoading(true)
 
             // Criando usuarioe armazenando dados na state
             const user = await createUserWithEmailAndPassword(auth,email,password)
+
+            // Setando informacoes na localStorage
+            localStorage.setItem('account',JSON.stringify({
+                usernameUser:username,
+                cargoUser:cargo,
+                img:null,
+            }))
 
             // Salvando uid do usuario na localStorage
             localStorage.setItem('@user',JSON.stringify(user.user.uid))
@@ -67,7 +77,7 @@ export function Register(){
 
             {loading ?
                 <button type="button" className="bg-indigo-500 ... rounded-sm flex justify-center items-center w-[220px] h-12" disabled>
-                    <svg className="rounded-full border-[8px] border-dotted border-white animate-spin size-9 mr-3 ..." viewBox="0 0  24">
+                    <svg className="rounded-full border-[8px] border-dotted border-white animate-spin size-9 mr-3 ..." viewBox="0 0 24 24">
                         {/* Animation  */}
                     </svg>
                     <p className='text-2xl'>Loading</p>
@@ -80,6 +90,16 @@ export function Register(){
 
 
                     {/* Name */}
+                    <div className="flex flex-col gap-1">
+                        <label>Username:</label>
+                        <input type="text" placeholder="Digite seu primeiro nome" className="bg-gray-700 rounded-sm pl-2 h-8 w-64" {...register('username')}/>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label>Cargo:</label>
+                        <input type="text" placeholder="estudante, desenvolvedor..." className="bg-gray-700 rounded-sm pl-2 h-8 w-64" {...register('cargo')}/>
+                    </div>
+
                     <div className="flex flex-col gap-1">
                         <label>Email:</label>
                         <input type="email" placeholder="Digite seu email" className="bg-gray-700 rounded-sm pl-2 h-8 w-64" {...register('email')}/>

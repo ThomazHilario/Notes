@@ -37,22 +37,22 @@ export default function Menu({nameUser, cargo, img}:PropsMenu){
 
     // changeImage
     async function changeImage(e:ChangeEvent){
-        // input 
-        const input:HTMLInputElement = e.target as HTMLInputElement
+        try {
+            // input 
+            const input:HTMLInputElement = e.target as HTMLInputElement
 
-        // files
-        const files = input.files?.length === 1 ? input.files : null
+            // files
+            const files = input.files?.length === 1 ? input.files : null
 
-        if(files !== null){
-            const url = URL.createObjectURL(files[0])
-            
-            document.querySelectorAll('.imgUser').forEach((img:any) => {
-                img.src = url
+            const urlImage = URL.createObjectURL(files[0])
+
+            const refSotrage = ref(storage, `images/${id}/${files[0].name}`)
+
+            await uploadBytes(refSotrage,urlImage).then((snapshot) => {
+                console.log(snapshot)
             })
-
-            // referencia da imagem
-            const imageRef = ref(storage, `Images/${id}/${files[0].name}`)
-
+        } catch (error) {
+            console.log(error)
         }
     }
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // interface typescript
-interface PropsAccount{
+export interface PropsAccount{
     usernameUser:string,
     cargoUser:string,
     img:string | null
@@ -92,7 +92,7 @@ export function Notes(){
             <header className="border-b-[1px] border-b-slate-800 w-full h-24 flex justify-center items-center pl-5 pr-5 md:justify-between">
                 <img src={Logo} alt='logo da nlw expert by rocketseat' className='hidden md:block md:h-10 '/>
 
-                <Menu nameUser={account.usernameUser} cargo={account.cargoUser} img={account.img}/>
+                <Menu nameUser={account.usernameUser} cargo={account.cargoUser} img={account.img} />
                 
             </header>
 

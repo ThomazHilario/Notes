@@ -89,6 +89,8 @@ export default function Menu({nameUser, cargo, img}:PropsMenu){
         // Removendo uid da localStorage
         localStorage.removeItem('@user')
 
+        localStorage.removeItem('account')
+
         // Voltando para a pagina de login
         navigate('/')
     

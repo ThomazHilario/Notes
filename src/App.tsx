@@ -7,7 +7,7 @@ function App() {
   
   return (
     <NotesProvider>
-      <Toaster/>
+      <Toaster position="top-right" duration={2000}/>
       <BrowserPage/>
     </NotesProvider>
   )

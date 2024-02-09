@@ -9,7 +9,10 @@ import { ptBR } from 'date-fns/locale'
 
 // imports firebase
 import { updateDoc, doc } from 'firebase/firestore'
-import { db } from '../Services'; 
+import { db } from '../Services';
+
+// Import toast
+import { toast } from 'sonner'
 
 // PropsCard
 interface PropsCard{
@@ -26,19 +29,22 @@ export function NotesCard({ date, text, position}:PropsCard){
     // deleteNotes
     async function deleteNotes(position:number){
        try {
-         // Deletando nota
-         notes.splice(position, 1)
+            // Notificando a delecao da nota
+            toast.success('Nota deletada')
 
-         // Atulizando state
-         setNotes([...notes])
- 
-        // referencia do documento
-        const docRef = doc(db,'Users', id)
+            // Deletando nota
+            notes.splice(position, 1)
 
-         // Atualizando o banco de dados
-         await updateDoc(docRef,{
-            Notes:[...notes]
-         })
+            // Atulizando state
+            setNotes([...notes])
+    
+            // referencia do documento
+            const docRef = doc(db,'Users', id)
+
+            // Atualizando o banco de dados
+            await updateDoc(docRef,{
+                Notes:[...notes]
+            })
        } catch (e) {
         console.log(e)
        }

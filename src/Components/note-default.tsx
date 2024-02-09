@@ -11,6 +11,8 @@ import { useNotes } from '../Context'
 import { db } from '../Services'
 import { updateDoc, doc } from 'firebase/firestore'
 
+// Import toast
+import { toast } from 'sonner'
 
 let Speech:SpeechRecognition | null = null
 
@@ -59,6 +61,9 @@ export function NoteDefaultNew(){
     async function addNote(){
         try {
             if(createNote !== ''){
+                // Notificando a adicao da nota
+                toast.success('Nota Adicionada')
+
                 // Salvando na state notes
                 setNotes([{
                     date:new Date(),

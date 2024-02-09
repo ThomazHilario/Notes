@@ -44,13 +44,15 @@ export default function Menu({nameUser, cargo, img}:PropsMenu){
             // files
             const files = input.files?.length === 1 ? input.files : null
 
-            const urlImage = URL.createObjectURL(files[0])
+            if(files !== null){
+                const urlImage = URL.createObjectURL(files[0])
 
-            const refSotrage = ref(storage, `images/${id}/${files[0].name}`)
+                const refSotrage = ref(storage, `images/${id}/${files[0].name}`)
 
-            await uploadBytes(refSotrage,urlImage).then((snapshot) => {
-                console.log(snapshot)
-            })
+                await uploadBytes(refSotrage,urlImage).then((snapshot) => {
+                    console.log(snapshot)
+                })
+            }
         } catch (error) {
             console.log(error)
         }

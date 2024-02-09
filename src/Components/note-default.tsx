@@ -9,7 +9,7 @@ import { useNotes } from '../Context'
 
 // imports firebase
 import { db } from '../Services'
-import { setDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc } from 'firebase/firestore'
 
 
 let Speech:SpeechRecognition | null = null
@@ -65,7 +65,11 @@ export function NoteDefaultNew(){
                     text:createNote
                 },...notes])
 
-                await setDoc(doc(db,'Users',id as string),{
+                // Referencia ao banco de dados
+                const docRef = doc(db,'Users',id as string)
+
+                // Atualizando notes no banco de dados
+                await updateDoc(docRef,{
                     Notes:[{
                         date:Date.now(),
                         text:createNote
@@ -138,6 +142,7 @@ export function NoteDefaultNew(){
             Speech.stop()
         }
     }
+
     return(
         <Dialog.Root>
 

@@ -47,9 +47,11 @@ export default function Menu({nameUser, cargo, img}:PropsMenu){
             if(files !== null){
                 const urlImage = URL.createObjectURL(files[0])
 
+                const blob = new Blob([urlImage])
+
                 const refSotrage = ref(storage, `images/${id}/${files[0].name}`)
 
-                await uploadBytes(refSotrage,urlImage).then((snapshot) => {
+                await uploadBytes(refSotrage,blob).then((snapshot) => {
                     console.log(snapshot)
                 })
             }

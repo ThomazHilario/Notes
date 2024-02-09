@@ -49,6 +49,7 @@ Tenha o gerenciador de pacotes npm ou Yarn instalado em seu sistema.
 
 ### Instalação
 Clone o repositório do projeto do NLW-Notes do GitHub:
+
 `git clone https://github.com/ThomazHilario/Notes.git)https://github.com/ThomazHilario/Notes.git`
 
 ### Navegue até o diretório do projeto:

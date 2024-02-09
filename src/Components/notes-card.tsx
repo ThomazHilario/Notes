@@ -30,7 +30,7 @@ export function NotesCard({ date, text, position}:PropsCard){
     async function deleteNotes(position:number){
        try {
             // Notificando a delecao da nota
-            toast.success('Nota deletada')
+            toast.success('Nota deletada',{style:{color:'white',border:'0' ,background:'#F46767'}})
 
             // Deletando nota
             notes.splice(position, 1)

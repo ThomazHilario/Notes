@@ -62,7 +62,7 @@ export function NoteDefaultNew(){
         try {
             if(createNote !== ''){
                 // Notificando a adicao da nota
-                toast.success('Nota Adicionada')
+                toast.success('Nota Adicionada',{style:{color:'white',border:'0' ,background:'#9058F5'}})
 
                 // Salvando na state notes
                 setNotes([{

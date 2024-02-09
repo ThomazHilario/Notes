@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom'
 
 // import firebase
 import { signOut } from 'firebase/auth'
-import { auth, storage } from '../Services'
-import { uploadBytes, ref } from 'firebase/storage'
+import { db, auth, storage } from '../Services'
+import { getDownloadURL, uploadBytes, ref } from 'firebase/storage'
+import { updateDoc, doc } from 'firebase/firestore'
 
 // Imports react
 import { useNotes } from '../Context'
 import { ChangeEvent } from 'react'
+import { toast } from 'sonner'
 
 interface PropsMenu{
     nameUser:string,
@@ -45,18 +47,36 @@ export default function Menu({nameUser, cargo, img}:PropsMenu){
             const files = input.files?.length === 1 ? input.files : null
 
             if(files !== null){
-                const urlImage = URL.createObjectURL(files[0])
-
-                const blob = new Blob([urlImage])
-
-                const refSotrage = ref(storage, `images/${id}/${files[0].name}`)
-
-                await uploadBytes(refSotrage,blob).then((snapshot) => {
-                    console.log(snapshot)
+                // Criando uma urlLocal de momento
+                const urlLocal = URL.createObjectURL(files[0])
+                
+                // Atualizando source das imagens
+                document.querySelectorAll('.imgUser').forEach((img:any) => {
+                    img.src = urlLocal
                 })
+
+                // referencia da imagem
+                const imageRef = ref(storage, `Images/${id}/${files[0].name}`)
+
+                // Fazendo upload da imagem para a storage
+                await uploadBytes(imageRef,files[0])
+
+                // Buscando imagem da storage e gerando uma url da imagem
+                const urlStorage = await getDownloadURL(ref(storage, `Images/${id}/${files[0].name}`))
+
+                // Referencia do banco de dados
+                const docRef = doc(db,'Users',id)
+
+                // Adicionando url da imagem ao banco de dados do usuario
+                await updateDoc(docRef,{
+                    'account.img':urlStorage
+                })
+
             }
         } catch (error) {
             console.log(error)
+        }finally{
+            toast.message("A sua foto foi atualizada")
         }
     }
 

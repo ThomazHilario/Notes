@@ -175,12 +175,12 @@ export function NoteDefaultNew(){
                         {/* Icon de fechar modal */}
                         <Dialog.Close className=' py-1.5 px-3 absolute right-0 top-0 bg-slate-800 text-white'>x</Dialog.Close>
 
-                        <div className='h-[90vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'> 
+                        <div className='h-[95vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'> 
 
                             <h1 className='text-slate-200'>Adicionar nota</h1>
                             
                             {board ? 
-                            <textarea onChange={contentWordsAndUpdateState} className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" value={createNote} autoFocus/>
+                            <textarea onChange={contentWordsAndUpdateState} className='w-[100%] bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" value={createNote} autoFocus/>
                              : 
                              <p className='text-slate-400'>Comece <button onClick={startVoice}className='text-lime-400'>gravando </button> uma nota em áudio ou se preferir <button className='text-lime-400' onClick={onBoard}>utilize apenas texto.</button>
                             </p>}

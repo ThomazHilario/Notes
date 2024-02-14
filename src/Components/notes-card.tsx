@@ -127,13 +127,13 @@ export function NotesCard({ date, text, position}:PropsCard){
 
                     {isToEditNote 
                         ? 
-                        <div className=' pt-10 h-[90vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
-                            <textarea className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus value={wordNote} onChange ={(e) => setWordNote(e.target.value)}/>
+                        <div className=' pt-10 h-[95vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
+                            <textarea className='w-[100%] bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus value={wordNote} onChange ={(e) => setWordNote(e.target.value)}/>
                         </div>
 
                         :
 
-                        <div className=' pt-10 h-[90vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
+                        <div className=' pt-10 h-[95vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
                             <h1 className='text-slate-200'>{formatDistanceToNow(date,{addSuffix:true,locale:ptBR})}</h1>
                             
                             <p className='text-slate-400'>{text}</p>

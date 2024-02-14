@@ -1,6 +1,10 @@
 import { useState, useEffect, ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 
+// import firebase
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../Services'
+
 interface PropsPrivate{
     children:ReactNode
 }
@@ -11,18 +15,24 @@ export default function Private({children}:PropsPrivate){
     const [isLogged, setIsLogged] = useState<boolean | null>(null)
 
     useEffect(() => {
-        // Verificando se tem algo na localStorage
-        if(localStorage.getItem('@user') !== null ){
-            setIsLogged(true)
+        // Verificando se o usuario esta logado
+        function verifyLoginUser(){
+            onAuthStateChanged(auth, (user) => {
+                if(user){
+                    setIsLogged(true)
+                } else{
+                    setIsLogged(false)
+                }
+            })
         }
 
-        setIsLogged(false)
+        verifyLoginUser()
 
     },[])
 
-    if(isLogged){
+    if(isLogged === true){
         return children
     }
 
-    return Navigate({to:'/',replace:true})
+    return <Navigate to='/' replace={true} />
 }

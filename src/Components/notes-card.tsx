@@ -30,14 +30,47 @@ export function NotesCard({ date, text, position}:PropsCard){
     // state - notes e setNotes
     const { notes, setNotes, id} = useNotes()
 
-    // state - isToEditNote
-    const [isToEditNote, setIsToEditNote] = useState(false)
+    // state - wordNote
+    const [wordNote, setWordNote] = useState<string>(text)
 
-    // editNote
-    function editNote(){
+    // state - isToEditNote
+    const [isToEditNote, setIsToEditNote] = useState<boolean>(false)
+
+    // IsToEditNote
+    function IsToEditNote(){
         if(isToEditNote === false){
             setIsToEditNote(true)
         } else{
+            setIsToEditNote(false)
+        }
+    }
+
+    // editNote
+    async function editNote(){
+        try {
+            if(wordNote !== ''){
+                // Atualizando a nota 
+                // passando o date atual e a nova nota
+                notes[position].date = date
+                notes[position].text = wordNote
+                
+                // Salvando nova state
+                setNotes([...notes])
+                
+                // Referencia do banco de dados
+                const docRef = doc(db,'Users',id)
+
+                // Atulizando no banco de dados
+                await updateDoc(docRef,{
+                    Notes: [...notes]
+                })
+
+                // Notificação de sucesso
+                toast.success('Nota editada',{style:{color:'white',border:'0' ,background:'#F46767'}})
+            }
+        } catch (error) {
+            console.log(error)
+        } finally{
             setIsToEditNote(false)
         }
     }
@@ -88,15 +121,14 @@ export function NotesCard({ date, text, position}:PropsCard){
                 <Dialog.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
                     
                     {/* Icon de fechar modal */}
-                    <Dialog.Close className=' py-1.5 px-3 absolute right-0 top-0 bg-slate-800 text-white'><X size={20}/></Dialog.Close>
+                    <Dialog.Close className=' py-1.5 px-3 absolute right-0 top-0 bg-slate-800 text-white' onClick={() => setIsToEditNote(false)}><X size={20}/></Dialog.Close>
 
-                    <button className=' py-1.5 px-3 absolute left-0 top-0 bg-slate-800 text-white' onClick={editNote}><FilePenLine size={20} /></button>
+                    <button className=' py-1.5 px-3 absolute left-0 top-0 bg-slate-800 text-white' onClick={IsToEditNote}><FilePenLine size={20} /></button>
 
                     {isToEditNote 
                         ? 
-
                         <div className=' pt-10 h-[90vh] w-[100vw] sm:h-[60vh] sm:w-[70vw] md:flex flex-col gap-3 p-5 bg-slate-700 rounded-t-md lg:w-[60vw]'>
-                            <textarea className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus/>
+                            <textarea className='bg-black/10 text-white outline-none resize-none p-1' rows={10} name="myNotes" id="note" autoFocus value={wordNote} onChange ={(e) => setWordNote(e.target.value)}/>
                         </div>
 
                         :
@@ -108,7 +140,14 @@ export function NotesCard({ date, text, position}:PropsCard){
                         </div>
                     }
 
-                    <button className='bg-red-500 w-full rounded-b-md p-2' onClick={() => deleteNotes(position)}>Deseja apagar esta nota ?</button>
+                    {isToEditNote 
+                        ?
+                        <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={editNote}>Editar nota</Dialog.Close>
+
+                        :
+                        
+                        <button className='bg-red-500 w-full rounded-b-md p-2' onClick={() => deleteNotes(position)}>Deseja apagar esta nota ?</button>
+                    }
                 </Dialog.Content>
 
             </Dialog.Portal>

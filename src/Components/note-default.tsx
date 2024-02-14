@@ -66,7 +66,7 @@ export function NoteDefaultNew(){
 
                 // Salvando na state notes
                 setNotes([{
-                    date:new Date(),
+                    date:Date.now(),
                     text:createNote
                 },...notes])
 

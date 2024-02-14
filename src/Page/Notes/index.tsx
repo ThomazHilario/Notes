@@ -36,7 +36,7 @@ export function Notes(){
     const [seach, setSeach] = useState<string>('')
 
     // Buscando dados do banco de dados
-    useEffect(() => {
+    useEffect(() => { 
 
         // Verificando se tem a chave @user na localStorage
         if(localStorage.getItem('@user') !== null){

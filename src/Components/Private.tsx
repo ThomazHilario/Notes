@@ -30,9 +30,10 @@ export default function Private({children}:PropsPrivate){
 
     },[])
 
-    if(isLogged === true){
+    if(isLogged === false){
+        return <Navigate to='/' replace={true} />
+    }else{
         return children
-    }
-
-    return <Navigate to='/' replace={true} />
+        
+    }  
 }

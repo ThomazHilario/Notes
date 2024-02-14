@@ -14,7 +14,7 @@ export function BrowserPage(){
             <Routes>
                 <Route path='/' element={<Home/>} />
                 <Route path='/register' element={<Register/>} />
-                <Route path='/notes' element={<Notes/>} />
+                <Route path='/notes' element={<Private><Notes/></Private>} />
             </Routes>
         </BrowserRouter>
     )

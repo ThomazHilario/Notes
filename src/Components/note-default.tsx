@@ -154,7 +154,7 @@ export function NoteDefaultNew(){
             
 
             {/* Trocando o button pelo dialog tringger */}
-            <Dialog.Trigger className="text-justify flex flex-col bg-slate-700 gap-3 p-5 rounded-md  hover:ring-2 hover: ring-slate-600 transition h-80" onClick={openBoardCard}>
+            <Dialog.Trigger className="text-justify flex flex-col bg-slate-700 gap-3 p-5 rounded-md  hover:ring-2 hover: ring-slate-600 transition duration-300 h-80" onClick={openBoardCard}>
 
                 <h1 className="text-slate-200 ">Adicionar nota</h1>
 

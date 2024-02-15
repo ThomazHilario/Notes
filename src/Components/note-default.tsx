@@ -191,7 +191,7 @@ export function NoteDefaultNew(){
                             <div className='size-3 rounded-full bg-red-500 animate-pulse'/>
                             Parar de gravar
                         </button> 
-                        : <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}>Adicionar nota</Dialog.Close>}
+                        : <Dialog.Close className='group bg-lime-400 w-full rounded-b-md p-2' onClick={addNote}><span className='px-3 pb-[2px] group-hover:border-b-[1px] border-black'>Adicionar nota</span></Dialog.Close>}
                     </Dialog.Content>
 
                 </Dialog.Portal>

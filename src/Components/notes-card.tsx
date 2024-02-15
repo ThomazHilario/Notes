@@ -142,11 +142,11 @@ export function NotesCard({ date, text, position}:PropsCard){
 
                     {isToEditNote 
                         ?
-                        <Dialog.Close className='bg-lime-400 w-full rounded-b-md p-2' onClick={editNote}>Editar nota</Dialog.Close>
+                        <Dialog.Close className='group bg-lime-400 w-full rounded-b-md p-2' onClick={editNote}><span className='px-3 pb-[2px] group-hover:border-b-[1px] border-black'>Editar nota</span></Dialog.Close>
 
                         :
                         
-                        <button className='bg-red-500 w-full rounded-b-md p-2' onClick={() => deleteNotes(position)}>Deseja apagar esta nota ?</button>
+                        <button className='group bg-red-500 w-full rounded-b-md p-2  ' onClick={() => deleteNotes(position)}><span className='group-hover:border-b-[1px] border-white'>Deseja apagar esta nota ?</span></button>
                     }
                 </Dialog.Content>
 

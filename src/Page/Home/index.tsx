@@ -1,6 +1,9 @@
 // imports react hooks
 import { useState, useEffect } from 'react'
 
+// import sonner
+import { toast } from 'sonner'
+
 // Import firebase auth
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../Services'
@@ -49,7 +52,7 @@ export function Home(){
     async function loginUser({email,password}:LoginType){
         try{
             if(email !== '' && password !== ''){
-
+                // Alterando o loading para true
                 setLoading(true)
     
                 // Logando usuario
@@ -61,9 +64,23 @@ export function Home(){
                 // navegando para a rota notes
                 navigate('/notes')
             }
+
         }catch(error){
-            console.log(error)
+            // Verificando se tem error de error          
+            if(error instanceof Error){
+                // Caso tenha caia na condição do switch case
+                switch(error.message){
+                    case 'Firebase: Error (auth/invalid-credential).':
+                        toast.info('Email ou senha invalido',{duration:5000})
+                        break
+                    default:
+                        break
+                }
+            }
             setLoading(false)
+        }finally{
+            // Mensagem de notificação
+            toast.success('Bem vindo de volta!!', {duration:1000})
         }                
     }
 
